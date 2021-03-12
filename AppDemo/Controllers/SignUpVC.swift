@@ -15,6 +15,7 @@ class SignUpVC: UIViewController {
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet var view1: UIView!
     @IBOutlet var viewtxtEmail: UIView!
+    @IBOutlet var lblsignUp: UILabel!
     @IBOutlet var viewtxtPassword: UIView!
     @IBOutlet weak var btnSignUp: UIButton!
     
@@ -36,6 +37,12 @@ class SignUpVC: UIViewController {
         self.viewtxtEmail.setCornerRadius(radius: self.viewtxtEmail.layer.frame.height/2)
         self.viewtxtPassword.setCornerRadius(radius: self.viewtxtEmail.layer.frame.height/2)
         self.btnSignUp.setCornerRadius(radius: 15)
+        self.lblsignUp.text = NSLocalizedString("SignUp", comment: "")
+    }
+    
+    @IBAction func btnIsSignInClick(_ sender: Any) {
+        let signinVC = storyBoard.instantiateViewController(withIdentifier: "SignInVC") as! SignInVC
+        self.navigationController?.pushViewController(signinVC, animated: true)
     }
     
     @IBAction func btnSignUpClick(_ sender: Any) {
@@ -72,13 +79,16 @@ class SignUpVC: UIViewController {
                 guard let self = self else {return}
                 var message : String = ""
                 if (success){
-                    
+                    self.txtEmail.text = ""
+                    self.txtPassword.text = ""
                     UserDefaults.standard.setValue(uid, forKey: "userid")
                     UserDefaults.standard.setValue(email, forKey: "email")
                     UserDefaults.standard.setValue(password, forKey: "password")
                     print(password)
+                    let homeVC = storyBoard.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
+                    UserDefaults.standard.set(true, forKey: "signup")
+                    self.navigationController?.pushViewController(homeVC, animated: true)
                     
-    
                 }else{
                     message = error ?? ""
                     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)

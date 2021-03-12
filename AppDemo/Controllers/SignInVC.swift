@@ -9,20 +9,24 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
-class SignInVC: UIViewController {
+class SignInVC: UIViewController,UITextFieldDelegate {
 
+    //MARK: - Variables
     let color = Colors()
-    
+    //MARK: - IBOutlets
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet var view1: UIView!
+    @IBOutlet var lblsignIn: UILabel!
     @IBOutlet var viewtxtEmail: UIView!
     @IBOutlet var viewtxtPassword: UIView!
     @IBOutlet weak var btnSignIn: UIButton!
     
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initialize()
+    
         // Do any additional setup after loading the view.
     }
 
@@ -30,6 +34,7 @@ class SignInVC: UIViewController {
         
     }
     
+    //MARK: -  Intialize Function
     func initialize() {
         view.backgroundColor = UIColor.clear
         let backgroundLayer = color.gl
@@ -38,8 +43,10 @@ class SignInVC: UIViewController {
         self.viewtxtEmail.setCornerRadius(radius: self.viewtxtEmail.layer.frame.height/2)
         self.viewtxtPassword.setCornerRadius(radius: self.viewtxtEmail.layer.frame.height/2)
         self.btnSignIn.setCornerRadius(radius: 15)
+        self.lblsignIn.text = NSLocalizedString("SignIn", comment: "")
     }
 
+    //MARK: - Button SignIn Click
     @IBAction func btnIsSignInClick(_ sender: Any) {
         guard let email = txtEmail.text, let password = txtPassword.text else { return }
         if txtEmail.text == ""{
@@ -66,6 +73,7 @@ class SignInVC: UIViewController {
         }
     }
     
+    //MARK: - Button SignUp Click
     @IBAction func btnIsSignUpClick(_ sender: Any) {
         let signupVC = storyBoard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpVC
         self.navigationController?.pushViewController(signupVC, animated: true)
@@ -82,19 +90,23 @@ class SignInVC: UIViewController {
                 UserDefaults.standard.setValue(uid, forKey: "userid")
                 UserDefaults.standard.setValue(email, forKey: "email")
                 UserDefaults.standard.setValue(password, forKey: "password")
-                //let homeVC = storyBoard.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
+                
+                let homeVC = storyBoard.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
                 UserDefaults.standard.set(true, forKey: "login")
-                //self.navigationController?.pushViewController(homeVC, animated: true)
+                self.navigationController?.pushViewController(homeVC, animated: true)
                 //                    print(UserDefaults.value(forKey: "email"))
                 message = "User was sucessfully logged in."
+                self.txtEmail.text = ""
+                self.txtPassword.text = ""
             } else {
                 message = error ?? ""
+                print(message)
+                let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+                print(message)
             }
-            print(message)
-            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-            print(message)
+            
         }
     }
 }

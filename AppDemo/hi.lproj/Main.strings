@@ -1,0 +1,24 @@
+
+/* Class = "UITextField"; placeholder = "Enter Email ID"; ObjectID = "CEm-QE-8ff"; */
+"CEm-QE-8ff.placeholder" = "Enter Email ID";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "JOX-iC-JyY"; */
+"JOX-iC-JyY.normalTitle" = "Sign Up";
+
+/* Class = "UILabel"; text = "Sign Up"; ObjectID = "bOL-ga-Lr6"; */
+"bOL-ga-Lr6.text" = "Sign Up";
+
+/* Class = "UITextField"; placeholder = " Enter Password"; ObjectID = "fYl-UK-b7P"; */
+"fYl-UK-b7P.placeholder" = " Enter Password";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "hFi-Pv-JaT"; */
+"hFi-Pv-JaT.normalTitle" = "Sign In";
+
+/* Class = "UITextField"; placeholder = " Enter Password"; ObjectID = "ko4-Tf-jLL"; */
+"ko4-Tf-jLL.placeholder" = " Enter Password";
+
+/* Class = "UILabel"; text = "Sign In"; ObjectID = "mwg-kH-PJl"; */
+"mwg-kH-PJl.text" = "Sign In";
+
+/* Class = "UITextField"; placeholder = "Enter Email ID"; ObjectID = "nh7-ms-UTE"; */
+"nh7-ms-UTE.placeholder" = "Enter Email ID";

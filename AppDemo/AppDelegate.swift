@@ -13,23 +13,49 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var strDataBasePath : String = String()
     static var appDelegate : AppDelegate?
+    var isLoggedIn = UserDefaults.standard.value(forKey: "login") as? Bool
+    var isSignUp = UserDefaults.standard.value(forKey: "signup") as? Bool
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        AppDelegate.appDelegate = self
+        AppDelegate.appDelegate = UIApplication.shared.delegate as! Self
         FirebaseApp.configure()
-//        self.window = UIWindow(frame: UIScreen.main.bounds)
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        let viewController = storyBoard.instantiateViewController(withIdentifier: "SignInVC") as! SignInVC
-//        let navigationController = UINavigationController.init(rootViewController: viewController)
-//        self.window?.rootViewController = navigationController
-//        self.window?.makeKeyAndVisible()
+        strDataBasePath = self.getDatabasePath() as String
+        if isLoggedIn == true {
+                //If already login then show Home screen
+            self.showHomeScreen()
+        }else if isSignUp == true{
+            self.showHomeScreen()
+        }else  {
+                //If not login then show Login screen
+                self.window = UIWindow(frame: UIScreen.main.bounds)
+                let viewController = storyBoard.instantiateViewController(withIdentifier: "SignInVC") as! SignInVC
+                let navigationController = UINavigationController.init(rootViewController: viewController)
+                self.window?.rootViewController = navigationController
+                self.window?.makeKeyAndVisible()
+             }
+//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SignInVC") as! SignInVC
+//        let navigationController = UINavigationController(rootViewController: nextViewController)
+//        let appdelegate = UIApplication.shared.delegate as! AppDelegate
+//        appdelegate.window?.rootViewController = navigationController
+//        navigationController.navigationBar.isHidden = true
+//        appdelegate.window?.makeKeyAndVisible()
+        
         // Override point for customization after application launch.
         return true
     }
 
-//    // MARK: UISceneSession Lifecycle
-//
+    func showHomeScreen(){
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let viewController = storyBoard.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
+        let navigationController = UINavigationController.init(rootViewController: viewController)
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+    }
+    
+  // MARK: UISceneSession Lifecycle
+
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -87,5 +113,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func getDatabasePath() -> NSString{
+        var strtempPath : NSString = NSString()
+        let objFileManager = FileManager()
+        var arrPath : NSArray = NSArray()
+        arrPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)as NSArray
+        
+        strtempPath = arrPath[0] as! NSString
+        strtempPath = strtempPath.appendingPathComponent("MakeupProduct.db")as NSString
+        print(strtempPath)
+        
+        let sourcePath = Bundle.main.path(forResource: "MakeupProduct", ofType: "db")
+        if !objFileManager.fileExists(atPath: strtempPath as String){
+            
+            do{
+                try objFileManager.copyItem(atPath: sourcePath!, toPath: strtempPath as String)
+                print("File has been copied")
+            }catch{
+                print("Some error has been there")
+            }
+        }
+        
+        return strtempPath
+    }
 }
 
